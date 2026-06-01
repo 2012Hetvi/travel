@@ -111,7 +111,7 @@ export default function DestinationDetailModal({ destinationId, onClose }: Props
     setData(null);
     setActiveTab('itinerary');
 
-    fetch(`/api/destinations/${destinationId}/details`)
+   fetch(`${import.meta.env.VITE_API_URL || ''}/api/destinations/${destinationId}/details`)
       .then(r => {
         if (!r.ok) throw new Error('Failed to load');
         return r.json();

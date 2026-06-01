@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+   "homepage": "https://2012Hetvi.github.io/travel",
   "scripts": {
     "dev": "concurrently \"vite\" \"tsx server/server.ts\"",
     "dev:frontend": "vite",
@@ -81,6 +82,7 @@
     "@types/react-dom": "^19",
     "@types/sqlite3": "^3.1.11",
     "concurrently": "^9.2.1",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.5",
     "tailwindcss": "^4.2.0",
     "tsx": "^4.22.3",
