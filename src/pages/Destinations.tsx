@@ -6,10 +6,10 @@ import DestinationCard from '../components/DestinationCard'
 const categories = ['All', 'Beach', 'Adventure', 'Romantic', 'Culture', 'Nature']
 const priceRanges = [
   { label: 'All Prices', min: 0, max: Infinity },
-  { label: 'Under $1000', min: 0, max: 1000 },
-  { label: '$1000 - $1500', min: 1000, max: 1500 },
-  { label: '$1500 - $2000', min: 1500, max: 2000 },
-  { label: 'Over $2000', min: 2000, max: Infinity }
+  { label: 'Under ₹1000', min: 0, max: 1000 },
+  { label: '₹1000 - ₹1500', min: 1000, max: 1500 },
+  { label: '₹1500 - ₹2000', min: 1500, max: 2000 },
+  { label: 'Over ₹2000', min: 2000, max: Infinity }
 ]
 
 function Destinations() {
