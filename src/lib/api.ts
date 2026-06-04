@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://wenderlust-api.onrender.com';
 
 export const fetchDestinations = () =>
   fetch(`${API_BASE}/api/destinations`).then(r => r.json());
