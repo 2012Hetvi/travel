@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FiSearch, FiFilter } from 'react-icons/fi'
 import DestinationCard from '../components/DestinationCard'
+import { fetchDestinations } from '../lib/api'
 
 const categories = ['All', 'Beach', 'Adventure', 'Romantic', 'Culture', 'Nature']
 const priceRanges = [
@@ -22,13 +23,10 @@ function Destinations() {
   const [selectedPriceRange, setSelectedPriceRange] = useState(0)
   const [showFilters, setShowFilters] = useState(false)
 
-  // Fetch dynamic destinations from SQLite
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const loadDestinations = async () => {
       try {
-        const res = await fetch('/api/destinations')
-        if (!res.ok) throw new Error('Failed to load destinations')
-        const data = await res.json()
+        const data = await fetchDestinations()
         setDestinations(data)
       } catch (err: any) {
         setError(err.message || 'An error occurred')
@@ -36,30 +34,23 @@ function Destinations() {
         setLoading(false)
       }
     }
-    fetchDestinations()
+    loadDestinations()
   }, [])
 
   const filteredDestinations = useMemo(() => {
     return destinations.filter((destination) => {
-      // Search filter
       const matchesSearch = destination.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         destination.country.toLowerCase().includes(searchQuery.toLowerCase())
-      
-      // Category filter
       const matchesCategory = selectedCategory === 'All' || destination.category === selectedCategory
-      
-      // Price filter
       const price = parseInt(destination.price.replace(/[^0-9]/g, ''))
       const { min, max } = priceRanges[selectedPriceRange]
       const matchesPrice = price >= min && price <= max
-
       return matchesSearch && matchesCategory && matchesPrice
     })
   }, [destinations, searchQuery, selectedCategory, selectedPriceRange])
 
   return (
     <div className="pt-20 min-h-screen bg-background">
-      {/* Hero */}
       <section className="relative py-20 bg-gradient-to-br from-primary/10 to-secondary/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -73,8 +64,6 @@ function Destinations() {
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
               Discover breathtaking destinations around the world. From tropical beaches to mountain peaks, find your perfect getaway.
             </p>
-
-            {/* Search Bar */}
             <div className="max-w-xl mx-auto">
               <div className="relative">
                 <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -91,10 +80,8 @@ function Destinations() {
         </div>
       </section>
 
-      {/* Filters & Results */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Filter Toggle (Mobile) */}
           <button
             onClick={() => setShowFilters(!showFilters)}
             className="lg:hidden flex items-center gap-2 mb-6 px-4 py-2 bg-card border border-border rounded-lg text-foreground"
@@ -104,14 +91,12 @@ function Destinations() {
           </button>
 
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sidebar Filters */}
             <motion.aside
               initial={false}
               animate={{ height: showFilters ? 'auto' : 0, opacity: showFilters ? 1 : 0 }}
               className={`lg:w-64 shrink-0 overflow-hidden lg:!h-auto lg:!opacity-100`}
             >
               <div className="bg-card rounded-2xl p-6 shadow-lg">
-                {/* Categories */}
                 <div className="mb-8">
                   <h3 className="text-lg font-semibold text-card-foreground mb-4">Categories</h3>
                   <div className="space-y-2">
@@ -131,7 +116,6 @@ function Destinations() {
                   </div>
                 </div>
 
-                {/* Price Range */}
                 <div>
                   <h3 className="text-lg font-semibold text-card-foreground mb-4">Price Range</h3>
                   <div className="space-y-2">
@@ -153,7 +137,6 @@ function Destinations() {
               </div>
             </motion.aside>
 
-            {/* Results */}
             <div className="flex-1">
               <div className="flex items-center justify-between mb-6">
                 <p className="text-muted-foreground">
@@ -162,7 +145,6 @@ function Destinations() {
               </div>
 
               {loading ? (
-                // Premium animated skeleton loader
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {[...Array(6)].map((_, i) => (
                     <div key={i} className="bg-card rounded-2xl overflow-hidden shadow-lg border border-border/50 animate-pulse">
